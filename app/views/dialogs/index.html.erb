@@ -1,0 +1,34 @@
+<div class="dialogs">
+  <div class="dialogs__header">
+    <div class="dialogs__header-title">
+      <h2>My messages</h2>
+    </div>
+    <div class="dialogs__header-actions">
+      <%=button_to('New dialog', new_dialog_path, method: :get, class: 'btn btn-sm btn-success dialogs__new-dialog-btn')%>
+    </div>
+  </div>
+  <div class="dialogs__items">
+    <%@dialogs.each do |dialog|%>
+      <%companion = (dialog.users - [current_user]).first%>
+        <%=link_to(dialog_path(id: dialog.id), data: {turbo: 'true'}) do%>
+        <div class="post">
+        <div class="post__author">
+          <div class="post-user">
+            <%=image_tag(companion.avatar, class: 'post-user__avatar-img rounded-circle')%><br>
+          </div>
+        </div>
+        <div class="post__body">
+          <%="#{companion.first_name} #{companion.last_name}"%><br>
+          <% unless dialog.messages.last.nil?%>
+            <span><%= "#{dialog.messages.last.content}" %></span><br>
+            <span class="post__created-at"><%= "#{time_ago_in_words(dialog.messages.last.created_at)} ago"%></span>
+          <%else%>
+            <span class="post__created-at"><%= "#{time_ago_in_words(dialog.created_at)} ago"%></span>
+          <%end%>
+
+        </div>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

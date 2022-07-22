@@ -1,0 +1,71 @@
+<div class="sign-up">
+  <h2>Sign up</h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :first_name %><br />
+      <%= f.text_field :first_name %>
+    </div>
+
+    <div class="field">
+      <%= f.label :last_name %><br />
+      <%= f.text_field :last_name %>
+    </div>
+
+      <div class="field">
+      <%= f.label :birthday %><br />
+      <%= f.date_select(:birthday, start_year: 1900) %>
+    </div>
+
+    <div class="field">
+      <%= f.label :gender %><br />
+      <%= f.select(:gender, ['man', 'woman']) %>
+    </div>
+
+    <div class="field">
+      <%= f.label :country %><br />
+      <%= f.text_field :country %>
+    </div>
+
+    <div class="field">
+      <%= f.label :city %><br />
+      <%= f.text_field :city %>
+    </div>
+
+    <div class="field">
+      <%= f.label :family_status %><br />
+      <%= f.select(:family_status, ['Married', 'Free', 'Active searching']) %>
+    </div>
+
+    <div class="field">
+      <%= f.label :avatar %><br />
+      <input id="avatar-selector" type="file">
+    </div>
+
+      <%= f.hidden_field :avatar %>
+
+    <div class="field">
+      <%= f.label :password %>
+      <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %><br />
+      <%= f.password_field :password, autocomplete: "new-password" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit("Sign up", class: 'btn btn-success') %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,32 @@
+<div class="users">
+<div class="users-search">
+  <div class="users-search__form">
+    <div>
+      <%=form_with(url: users_path, method: :get) do |form|%>
+        <%=form.text_field(:query, class: 'users-search__input', placeholder: 'type user name...')%>
+    </div>
+    <div>
+      <%=form.submit('Search', class: 'btn btn-success search-btn', id: 'seacrh-users-submit-btn')%>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="user-search__results">
+  <% if user_signed_in? && current_user.friends.any? && (params[:query].nil? || params[:query].blank?)%>
+    <h2><%=current_user.first_name + "'s friends"%></h2>
+    <%=render(partial: 'users/users', locals: {users: current_user.friends})%>
+  <% end %>
+
+  <% if @users.nil? %>
+    <h2>All users</h2>
+    <%=render(partial: 'users/users', locals: {users: User.all})%>
+  <% elsif @users.empty? %>
+    <h2>Search results</h2>
+    <p>Not found</p>
+  <% else %>
+     <h2>Search results</h2>
+    <%=render(partial: 'users/users', locals: {users: @users})%>
+  <% end %>
+</div>
+</div>

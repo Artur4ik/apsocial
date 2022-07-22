@@ -1,0 +1,17 @@
+<div class="post-form">
+  <div class="create-new-post">
+    Create new post
+  </div>
+  <%=form_with(url: posts_path, method: :post) do |f|%>
+    <div class="post-form__item">
+      <%= f.text_area(:text, rows: 5) %>
+    </div>
+
+    <%= f.hidden_field(:user_id, value: current_user.id) %>
+    <%= f.hidden_field(:target_id, value: params[:id]) %>
+
+    <div class="post-form__item">
+      <%= f.submit('Create', class: 'btn btn-success', id: 'create-new-post-btn') %>
+    </div>
+  <% end %>
+</div>

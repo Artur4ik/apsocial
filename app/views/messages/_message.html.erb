@@ -1,0 +1,10 @@
+<%=content_tag(:div, class: 'message', data: {id: message.id, dialog_id: message.dialog.id, user_id: message.user.id, created_at: message.created_at}) do%>
+  <div class="message__author">
+    <%=image_tag(message.user.avatar, class: 'rounded-circle message__author-img')%>
+    <div class="message__author-name"><%="#{message.user.first_name} #{message.user.last_name}"%></div>
+  </div>
+  <div class="message__content">
+    <%=message.content.html_safe%><br>
+    <span class="message__content-time"><%="#{time_ago_in_words(message.created_at)} ago"%></span>
+  </div>
+<%end%>

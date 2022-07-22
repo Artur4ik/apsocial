@@ -1,15 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Apsocial</title>
+    <title>ActivePlatform Social</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "reset" %>
+    <%= stylesheet_link_tag "lightbox" %>
+    <%= stylesheet_link_tag "application", "data-turbo": "false" %>
+    <%= javascript_importmap_tags %>
   </head>
-
   <body>
+    <header class="header">
+      <div class="logo">
+        <div class="logo__title"><%=link_to('ActivePlatform', root_path)%></div>
+        <div class="logo__image"><%=image_tag('ap_logo.png', class: 'image')%></div>
+      </div>
+    </header>
+    <aside class="user-menu">
+      <ul class="nav-menu">
+        <% if user_signed_in? %>
+          <%= link_to(user_path(id: current_user.id)) do%>
+            <li class="nav-menu__item"><%=image_tag('home.png', class: 'nav-menu__item-icon')%>My page</li>
+          <% end %>
+          <%= link_to(users_path) do%>
+            <li class="nav-menu__item"><%=image_tag('user.png', class: 'nav-menu__item-icon')%>My friends</li>
+          <% end %>
+          <%= link_to(dialogs_path) do%>
+            <li class="nav-menu__item"><%=image_tag('messages.png', class: 'nav-menu__item-icon')%>My messages</li>
+          <% end %>
+          <%= link_to(user_photos_path(user_id: current_user.id)) do%>
+            <li class="nav-menu__item"><%=image_tag('photos.png', class: 'nav-menu__item-icon')%>My photos</li>
+          <% end %>
+          <%= link_to(destroy_user_session_path, method: :delete) do%>
+            <li class="nav-menu__item"><%=image_tag('logout.png', class: 'nav-menu__item-icon')%>Log out</li>
+          <% end %>
+        <% else %>
+          <%= link_to(new_user_session_path) do%>
+            <li class="nav-menu__item"><%=image_tag('logout.png', class: 'nav-menu__item-icon')%>Login</li>
+          <% end %>
+          <%= link_to(new_user_registration_path, data: {turbo: false}) do%>
+            <li class="nav-menu__item"><%=image_tag('register.png', class: 'nav-menu__item-icon')%>Register</li>
+          <% end %>
+        <% end %>
+      </ul>
+    </aside>
     <%= yield %>
   </body>
 </html>

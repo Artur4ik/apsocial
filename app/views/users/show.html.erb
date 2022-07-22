@@ -1,0 +1,67 @@
+<div class="user-page">
+  <div class="user">
+    <%=image_tag(@user.avatar, class: "rounded-circle user-avatar")%>
+
+    <div class="user__info">
+      <span class="user__info-name"><%=@user.first_name%> <%=@user.last_name%> <%=image_tag("#{@user.gender}.png", width: 35)%></span><br>
+      <span class="user__info-birthday"><%="#{Time.zone.now.year - @user.birthday.strftime("%Y").to_i} y.o"%>, <%=@user.family_status%></span><br>
+      <span class="user__info-address"><%=image_tag('location.png', size: "20x20")%><%=@user.country%>, <%=@user.city%></span>
+    </div>
+    <div class="user__actions">
+      <%=button_to('Edit profile', edit_user_registration_path, method: :get, class: 'btn btn-sm btn-success') if user_signed_in? && current_user.id == params[:id].to_i%>
+      <%=button_to('Add friend', user_friendships_path(user_id: params[:id], id: current_user.id), method: :post, class: 'btn btn-sm btn-success') if user_signed_in? && current_user.id != params[:id].to_i && !current_user.friends.exists?(params[:id])%>
+      <%=button_to('Delete friend', user_friendship_path(user_id: params[:id], id: current_user.id), class: 'btn btn-sm btn-danger', method: :delete) if user_signed_in? && current_user.friends.exists?(params[:id])%>
+    </div>
+    <div class="user__media">
+      <% if @photos.any? %>
+      <br><span class="user__friends-title"><%=link_to('Photos', user_photos_path(user_id: params[:id]))%></span>
+      <div class="user__photos">
+        <% @photos.each do |photo| %>
+          <%=link_to(user_photo_path(user_id: photo.user.id, id: photo.id), data: {lightbox: "user-photos"}) do%>
+            <%=image_tag(photo.data, class: 'user__photos-img')%>
+          <% end %>
+        <% end %>
+      </div>
+      <% end %>
+      <% if @friends.any? %>
+        <span class="user__friends-title">Friends</span>
+      <% end %>
+      <div class="user__friends">
+        <% @friends.each do |friend| %>
+          <%=link_to(user_path(id: friend.id)) do%>
+            <div class="friend">
+              <%=image_tag(friend.avatar, class: 'friend__avatar-img rounded-circle')%><br>
+              <%=friend.first_name%>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <% if @posts.any? %>
+        <br><span class="user__friends-title">Posts</span>
+      <%end%>
+    </div>
+  </div>
+</div>
+<div class="wall">
+  <% @posts.each do |post| %>
+    <div class="post">
+      <div class="post__author">
+        <%=link_to(user_path(id: post.user.id)) do%>
+          <div class="post-user">
+            <%=image_tag(post.user.avatar, class: 'post-user__avatar-img rounded-circle')%><br>
+          </div>
+        <% end %>
+      </div>
+      <div class="post__body">
+        <%=link_to("#{post.user.first_name} #{post.user.last_name}", user_path(id: post.user.id))%><br>
+        <span><%= post.text.html_safe %></span><br>
+        <span class="post__created-at"><%= "#{time_ago_in_words(post.created_at)} ago"%></span>
+      </div>
+      <div class="post__actions">
+        <%=button_to('Delete', post_path(post.id), method: :delete, class: 'btn btn-sm btn-danger') if user_signed_in? && params[:id].to_i == current_user.id || post.user_id == current_user.id%>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%=render(partial: 'posts/create') if user_signed_in?%>

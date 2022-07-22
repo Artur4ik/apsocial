@@ -1,0 +1,14 @@
+<% users.each do |user| %>
+  <%=link_to(dialogs_path(id: user.id), method: :post) do%>
+    <div class="results__user">
+      <div class="user__avatar">
+        <%=image_tag(user.avatar, class: "rounded-circle user__avatar-img")%>
+      </div>
+      <div class="user__info">
+        <span class="user__info-name"><%=user.first_name%> <%=user.last_name%> <%=image_tag("#{user.gender}.png", width: 35)%></span><br>
+        <span class="user__info-birthday"><%="#{Time.zone.now.year - user.birthday.strftime("%Y").to_i} y.o"%>, <%=user.family_status%></span><br>
+        <span class="user__info-address"><%=image_tag('location.png', size: "20x20")%><%=user.country%>, <%=user.city%></span>
+      </div>
+    </div>
+  <% end %>
+<% end %>

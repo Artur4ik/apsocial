@@ -1,0 +1,9 @@
+<div class="photo">
+  <div class="photo__wrapper">
+    <%=image_tag(@photo.data, class: "photo__img")%>
+    <div class="photo-actions">
+      <%=button_to('Back', :back, method: :get, class: 'btn btn-sm btn-success')%>
+    </div>
+  </div>
+</div>
+

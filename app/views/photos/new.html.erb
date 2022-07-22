@@ -1,0 +1,6 @@
+<%= form_with(url: user_photos_path, method: :post) do |form| %>
+  <input id="photo-selector" type="file">
+  <%= form.hidden_field(:data) %>
+  <%= form.hidden_field(:user_id, value: current_user.id) %>
+  <%= form.submit('Upload')%>
+<% end %>

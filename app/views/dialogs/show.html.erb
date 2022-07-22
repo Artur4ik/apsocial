@@ -1,0 +1,35 @@
+<%=content_tag(:div, class: 'dialog', data: {id: params[:id], messages_url: messages_path}) do%>
+  <div class="dialogs__header">
+    <div class="dialogs__header-title">
+      <%= link_to(user_path(id: @companion.id)) do %>
+      <div class="dialogs__user">
+        <div class="dialogs__user-avatar">
+          <%=image_tag(@companion.avatar, class: "rounded-circle dialogs__user-avatar-img")%>
+        </div>
+        <div class="dialogs__user-info">
+          <h4><%="#{@companion.first_name} #{@companion.last_name}"%></h4>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <div class="dialogs__header-actions">
+      <%=button_to('All dialogs', dialogs_path, method: :get, class: 'btn btn-sm btn-success dialogs__new-dialog-btn')%>
+    </div>
+  </div>
+  <%=turbo_stream_from("dialog_#{@dialog.id}", target: 'messages')%>
+  <div class="messages" id="messages">
+    <%=render(@messages)%>
+  </div>
+  <div class="message-form">
+    <%=form_with(url: messages_path, method: :post, id: 'message-submit') do |form|%>
+    <div>
+      <%=form.text_field(:content, autofocus: "autofocus")%>
+    </div>
+    <div class="message-form__actions">
+      <%=form.hidden_field(:user_id, value: current_user.id)%>
+      <%=form.hidden_field(:dialog_id, value: @dialog.id)%>
+      <%=form.submit('Send', class: "btn btn-success message-form__actions-submit-btn")%>
+    </div>
+    <% end %>
+  </div>
+<%end%>

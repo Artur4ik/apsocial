@@ -1,0 +1,12 @@
+<div class="photos">
+  <h2><%=User.find(params[:user_id]).first_name + "'s"%> photos</h2>
+  <div class="photos__wrapper">
+    <% @photos.each do |photo| %>
+      <%=link_to(user_photo_path(user_id: photo.user.id, id: photo.id), data: {lightbox: "user-photos"}) do%>
+        <%=image_tag(photo.data, class: 'photos-img')%>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%= render(partial: 'photos/form') if user_signed_in? && current_user.id == params[:user_id].to_i%>
+</div>
